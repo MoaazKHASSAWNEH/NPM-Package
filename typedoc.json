@@ -1,0 +1,13 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs/api-generated",
+  "name": "pkg_name API",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "hideBreadcrumbs": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "entryFileName": "index.md",
+  "sort": ["source-order"]
+}

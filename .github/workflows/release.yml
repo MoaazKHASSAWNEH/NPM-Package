@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Changesets (Release PR or Publish)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout (full history for tags/versions)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node (20) + pnpm cache + npm registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Enable Corepack (use packageManager from package.json)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Optional but recommended: run quality gates before publishing
+      - name: Quality gates
+        run: |
+          pnpm run lint
+          pnpm run lint:package
+          pnpm run typecheck
+          pnpm run test
+          pnpm run build
+
+      - name: Create Release PR or Publish to npm
+        uses: changesets/action@v1
+        with:
+          version: pnpm run version-packages
+          publish: pnpm run release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

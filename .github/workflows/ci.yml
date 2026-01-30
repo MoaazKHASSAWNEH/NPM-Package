@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Lint / Typecheck / Test / Build / Package checks / Docs build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (20) + pnpm cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Enable Corepack (use packageManager from package.json)
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint (ESLint)
+        run: pnpm run lint
+
+      - name: Typecheck (tsc)
+        run: pnpm run typecheck
+
+      - name: Unit tests (Vitest)
+        run: pnpm run test
+
+      - name: Build (tsup)
+        run: pnpm run build
+
+      - name: Package lint (publint)
+        run: pnpm run lint:package
+
+      - name: Unused deps / exports check (knip)
+        run: pnpm run lint:deps
+
+      - name: Markdown lint
+        run: pnpm run lint:md
+
+      - name: Build docs (VitePress)
+        run: pnpm run docs:build
