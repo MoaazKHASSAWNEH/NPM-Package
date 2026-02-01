@@ -40,10 +40,10 @@ jobs:
       - name: Quality gates
         run: |
           pnpm run lint
-          pnpm run lint:package
           pnpm run typecheck
           pnpm run test
           pnpm run build
+          pnpm run lint:package
 
       - name: Create Release PR or Publish to npm
         uses: changesets/action@v1
