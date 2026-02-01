@@ -2,6 +2,8 @@
 
 A production-ready TypeScript template for creating and publishing npm packages. This template provides a complete development environment with modern tooling: dual ESM/CJS builds via tsup, Vitest for testing, ESLint and Prettier for code quality, VitePress for documentation, TypeDoc for API reference generation, Husky for Git hooks, and Changesets for automated versioning and npm publishing through GitHub Actions.
 
+> 📚 **[View the full documentation](https://moaazkhassawneh.github.io/NPM-Package/)**
+
 ---
 
 ## Table of Contents
