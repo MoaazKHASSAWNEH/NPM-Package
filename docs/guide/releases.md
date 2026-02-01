@@ -13,7 +13,7 @@ Changesets is a versioning workflow that:
 
 ## Workflow
 
-```
+```text
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
 │  Make code  │───▶│ Add         │───▶│ Merge PR    │───▶│ Merge       │
 │  changes    │    │ changeset   │    │ to main     │    │ Version PR  │
@@ -54,13 +54,13 @@ Changeset summaries become your changelog. Write them for users:
 
 **Good:**
 
-```
+```text
 Add `formatDate()` utility function for consistent date formatting
 ```
 
 **Bad:**
 
-```
+```text
 fixed stuff
 ```
 
@@ -195,7 +195,7 @@ This satisfies CI checks without triggering a version bump.
 
 Alternatively, if your repo has a CI check for changesets, you can skip it with:
 
-```
+```text
 [skip changeset]
 ```
 

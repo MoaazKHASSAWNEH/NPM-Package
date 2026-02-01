@@ -34,7 +34,7 @@ export default defineConfig({
 
 Running `pnpm run build` produces:
 
-```
+```text
 dist/
 ├── index.js        # ESM bundle (ES modules)
 ├── index.cjs       # CommonJS bundle

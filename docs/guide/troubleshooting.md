@@ -8,7 +8,7 @@ Common issues and solutions when working with this template.
 
 **Symptom:**
 
-```
+```text
 pnpm: command not found
 ```
 
@@ -30,7 +30,7 @@ npm install -g pnpm
 
 **Symptom:**
 
-```
+```text
 ERR_PNPM_UNSUPPORTED_ENGINE  Unsupported pnpm version
 ```
 
@@ -55,7 +55,7 @@ corepack prepare
 
 **Symptom:**
 
-```
+```text
 error your-package@1.0.0: The engine "node" is incompatible
 ```
 
@@ -83,7 +83,7 @@ fnm use 20
 
 **Symptom:**
 
-```
+```text
 ERR_PNPM_OUTDATED_LOCKFILE  Cannot install with "frozen-lockfile"
 ```
 
@@ -103,7 +103,7 @@ Then commit the updated `pnpm-lock.yaml`.
 
 **Symptom:**
 
-```
+```text
 ✘ [ERROR] Could not resolve "..."
 ```
 
@@ -127,7 +127,7 @@ pnpm run build
 
 **Symptom:**
 
-```
+```text
 Build failed with X error(s)
 ```
 
@@ -165,7 +165,7 @@ pnpm tsup --debug
 
 **Symptom:**
 
-```
+```text
 ESLint couldn't find a configuration file
 ```
 
@@ -195,6 +195,7 @@ This template uses `eslint-config-prettier` to disable conflicting rules. If you
    ```
 
 2. Or use the combined command:
+
    ```bash
    pnpm lint:staged
    ```
@@ -224,7 +225,7 @@ Add to `knip.json`:
 
 **Symptom:**
 
-```
+```text
 npm WARN publint
 ```
 
@@ -250,7 +251,7 @@ This shows detailed explanations for each issue.
 
 **Symptom:**
 
-```
+```text
 No test files found
 ```
 
@@ -263,6 +264,7 @@ No test files found
    ```
 
 2. Test files are not excluded:
+
    ```typescript
    exclude: ["node_modules", "dist"];
    ```
@@ -271,7 +273,7 @@ No test files found
 
 **Symptom:**
 
-```
+```text
 Cannot find module '../src/...'
 ```
 
@@ -331,7 +333,7 @@ pnpm run test:coverage
 
 **Symptom:**
 
-```
+```text
 ✖ lint-staged failed
 ```
 
@@ -352,7 +354,7 @@ pnpm lint-staged --verbose
 
 **Symptom:**
 
-```
+```text
 .husky/pre-commit: Permission denied
 ```
 
@@ -377,7 +379,7 @@ git config core.filemode false
 
 **Symptom:**
 
-```
+```text
 [vitepress] Error when building
 ```
 
@@ -433,7 +435,7 @@ See [GitHub Pages](./github-pages.md) for detailed setup.
 
 **Symptom:**
 
-```
+```text
 No changesets found
 ```
 
@@ -459,7 +461,7 @@ pnpm changeset
 
 **Symptom:**
 
-```
+```text
 npm ERR! 403 Forbidden
 ```
 

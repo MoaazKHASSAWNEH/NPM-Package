@@ -13,7 +13,7 @@ This template includes a VitePress documentation site for your package.
 
 ## Project Structure
 
-```
+```text
 docs/
 ├── .vitepress/
 │   ├── config.mts       # VitePress configuration

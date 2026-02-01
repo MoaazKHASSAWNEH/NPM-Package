@@ -39,11 +39,13 @@ export default defineConfig({
 ```
 
 ::: info Base Path Rules
-| Hosting | Base |
-| -------------------------------------- | ----------------- |
-| `username.github.io/repo-name` | `/repo-name/` |
-| Custom domain (`docs.example.com`) | `/` |
-| `username.github.io` (user/org site) | `/` |
+
+| Hosting                              | Base          |
+| ------------------------------------ | ------------- |
+| `username.github.io/repo-name`       | `/repo-name/` |
+| Custom domain (`docs.example.com`)   | `/`           |
+| `username.github.io` (user/org site) | `/`           |
+
 :::
 
 ### 3. Verify Workflow Permissions
@@ -131,7 +133,7 @@ export default defineConfig({
 
 Create `docs/public/CNAME`:
 
-```
+```text
 docs.example.com
 ```
 

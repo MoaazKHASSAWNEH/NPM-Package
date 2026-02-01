@@ -6,7 +6,7 @@ This guide covers recommended patterns for organizing your package source code.
 
 The template starts with a minimal structure:
 
-```
+```text
 src/
 ├── index.ts          # Main entry point, re-exports public API
 ```
@@ -17,7 +17,7 @@ This is perfect for small utilities. As your package grows, consider the pattern
 
 For packages that export multiple utility functions:
 
-```
+```text
 src/
 ├── index.ts          # Re-exports everything
 ├── string/
@@ -115,7 +115,7 @@ export default defineConfig({
 
 For packages that export React components:
 
-```
+```text
 src/
 ├── index.ts              # Re-exports all components
 ├── components/
@@ -187,7 +187,7 @@ And in `package.json`:
 
 For command-line applications:
 
-```
+```text
 src/
 ├── index.ts          # Library exports (if any)
 ├── cli.ts            # CLI entry point
@@ -263,7 +263,7 @@ export default defineConfig({
 
 For extensible packages with plugin support:
 
-```
+```text
 src/
 ├── index.ts              # Main exports
 ├── core/
@@ -322,7 +322,7 @@ export class Engine {
 
 If your package grows into a monorepo:
 
-```
+```text
 packages/
 ├── core/             # Main package
 │   ├── src/
@@ -396,7 +396,7 @@ export { createConfig } from "./config";
 
 Keep tests next to implementation:
 
-```
+```text
 src/
 ├── utils/
 │   ├── format.ts
@@ -405,7 +405,7 @@ src/
 
 Or use a parallel `test/` directory (as this template does):
 
-```
+```text
 src/
 ├── utils/
 │   └── format.ts

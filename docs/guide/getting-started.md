@@ -131,7 +131,7 @@ Opens the VitePress dev server at `http://localhost:5173/`.
 
 ## Project Structure Overview
 
-```
+```text
 ├── src/                    # Source code
 │   └── index.ts            # Package entry point
 ├── test/                   # Test files

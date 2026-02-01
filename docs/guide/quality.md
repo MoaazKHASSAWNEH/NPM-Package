@@ -117,7 +117,7 @@ pnpm run lint:package
 
 **Missing dist files:**
 
-```
+```text
 ✖ dist/index.js does not exist
 ```
 
@@ -125,7 +125,7 @@ Fix: Run `pnpm run build` first.
 
 **Incorrect types order:**
 
-```
+```text
 ✖ types should come before default in exports
 ```
 
@@ -164,7 +164,7 @@ pnpm run lint:deps
 
 **Unused dependencies:**
 
-```
+```text
 Unused dependencies:
 - lodash
 ```
@@ -173,7 +173,7 @@ Fix: Remove from `package.json` or use the dependency.
 
 **Unused exports:**
 
-```
+```text
 Unused exports:
 - src/utils.ts: helperFunction
 ```
