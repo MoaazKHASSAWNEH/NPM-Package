@@ -3,6 +3,12 @@ name: Docs (GitHub Pages)
 on:
   push:
     branches: [main]
+    paths:
+      - "docs/**"
+      - "package.json" # si ton titre/version affichés dans docs
+      - "pnpm-lock.yaml" # si une dépendance docs change
+      - "typedoc.json" # si tu génères API docs
+      - "src/**" # seulement si API docs dépend du code (optionnel)
   workflow_dispatch:
 
 permissions:
