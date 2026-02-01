@@ -1,48 +1,63 @@
-# 📦 NPM Package Template
+# NPM Package Template
 
-> A modern, production-ready TypeScript starter for publishing npm packages.
-
-<p align="center">
-  <a href="#-quick-start">English</a> •
-  <a href="#-démarrage-rapide">Français</a>
-</p>
+A production-ready TypeScript template for creating and publishing npm packages. This template provides a complete development environment with modern tooling: dual ESM/CJS builds via tsup, Vitest for testing, ESLint and Prettier for code quality, VitePress for documentation, TypeDoc for API reference generation, Husky for Git hooks, and Changesets for automated versioning and npm publishing through GitHub Actions.
 
 ---
 
 ## Table of Contents
 
-- [Quick Start](#-quick-start)
-- [Features](#-features)
-- [Requirements](#-requirements)
-- [Project Structure](#-project-structure)
-- [Available Scripts](#-available-scripts)
-- [Build System (tsup)](#-build-system-tsup)
-- [Testing (Vitest)](#-testing-vitest)
-- [Code Quality](#-code-quality)
-- [Git Hooks (Husky + lint-staged)](#-git-hooks-husky--lint-staged)
-- [Documentation (VitePress + TypeDoc)](#-documentation-vitepress--typedoc)
-- [Versioning & Publishing (Changesets)](#-versioning--publishing-changesets)
-- [CI/CD (GitHub Actions)](#-cicd-github-actions)
-- [Troubleshooting](#-troubleshooting)
-- [License](#-license)
+- [Features](#features)
+- [Quick Start](#quick-start)
+- [Requirements](#requirements)
+- [Project Structure](#project-structure)
+- [Scripts Reference](#scripts-reference)
+- [Build and Outputs](#build-and-outputs)
+- [Code Quality](#code-quality)
+- [Git Hooks (Husky + lint-staged)](#git-hooks-husky--lint-staged)
+- [Documentation (VitePress)](#documentation-vitepress)
+- [API Docs (TypeDoc)](#api-docs-typedoc)
+- [CI/CD (GitHub Actions)](#cicd-github-actions)
+- [Releases and Versioning (Changesets)](#releases-and-versioning-changesets)
+- [GitHub Pages Setup](#github-pages-setup)
+- [Customizing the Template](#customizing-the-template)
+- [Troubleshooting](#troubleshooting)
+- [License](#license)
 
 ---
 
-## 🚀 Quick Start
+## Features
+
+- **TypeScript 5.x** with strict mode enabled
+- **Dual package output** (ESM + CommonJS) via tsup with source maps and declaration files
+- **Vitest** for fast unit testing with V8 coverage
+- **ESLint 9** with flat config and Prettier integration
+- **VitePress** documentation site with hot reload
+- **TypeDoc** generates Markdown API docs into VitePress
+- **Husky + lint-staged** for pre-commit and pre-push quality gates
+- **Changesets** for semantic versioning and automated changelog generation
+- **GitHub Actions** workflows for CI, documentation deployment, and npm releases
+- **publint** validates package.json exports
+- **knip** detects unused dependencies and exports
+- **markdownlint** ensures consistent Markdown formatting
+
+---
+
+## Quick Start
 
 ### 1. Use this template
 
+Click "Use this template" on GitHub, or clone directly:
+
 ```bash
-# Clone the repository
 git clone https://github.com/MoaazKHASSAWNEH/NPM-Package.git my-package
 cd my-package
-
-# Remove the existing git history and start fresh
 rm -rf .git
 git init
 ```
 
 ### 2. Enable Corepack and install dependencies
+
+Corepack manages the pnpm version specified in `package.json`:
 
 ```bash
 corepack enable
@@ -51,26 +66,21 @@ pnpm install
 
 ### 3. Initialize your package
 
+Run the initialization script to replace placeholder values:
+
 ```bash
 pnpm run init:template
 ```
 
-This interactive script will prompt you for:
-
-- **Package name** (e.g., `my-awesome-lib`)
-- **Package description**
-- **Author name**
-- **GitHub username** (for repository URL)
-
-It automatically updates `package.json`, `LICENSE`, documentation configs, and cleans up the initialization script.
+This prompts for your package name, description, author, and GitHub username, then updates `package.json`, `LICENSE`, and documentation configs.
 
 ### 4. Start developing
 
 ```bash
-# Build once
+# Build the package once
 pnpm run build
 
-# Watch mode (rebuild on changes)
+# Build in watch mode
 pnpm run dev
 
 # Run tests
@@ -78,149 +88,157 @@ pnpm run test
 
 # Run tests in watch mode
 pnpm run test:watch
+
+# Start documentation dev server
+pnpm run docs:dev
 ```
 
 ---
 
-## ✨ Features
+## Requirements
 
-| Category           | Tools & Technologies                           |
-| ------------------ | ---------------------------------------------- |
-| **Language**       | TypeScript 5.x with strict mode                |
-| **Build**          | tsup (ESM + CJS dual output)                   |
-| **Test**           | Vitest with coverage (V8)                      |
-| **Lint**           | ESLint 9 (flat config) + Prettier              |
-| **Documentation**  | VitePress + TypeDoc (auto-generated API docs)  |
-| **Versioning**     | Changesets (semantic versioning & changelogs)  |
-| **Git Hooks**      | Husky + lint-staged (automated quality checks) |
-| **CI/CD**          | GitHub Actions (test, docs, release)           |
-| **Package Checks** | publint + knip (exports validation, dead code) |
+| Requirement        | Version | Notes                                                |
+| ------------------ | ------- | ---------------------------------------------------- |
+| **Node.js**        | >= 20   | LTS version recommended                              |
+| **pnpm**           | 9.0.0   | Managed via Corepack; version pinned in package.json |
+| **Git**            | >= 2.x  | Required for Husky hooks                             |
+| **GitHub account** | —       | For Actions workflows and Pages deployment           |
+| **npm account**    | —       | For publishing packages (requires access token)      |
 
----
+### Installing pnpm via Corepack
 
-## 📋 Requirements
-
-| Tool        | Version | Notes                |
-| ----------- | ------- | -------------------- |
-| **Node.js** | ≥ 20    | LTS recommended      |
-| **pnpm**    | ≥ 9.0.0 | Managed via Corepack |
-| **Git**     | ≥ 2.x   | For Husky hooks      |
-
-### Enable Corepack
-
-Corepack ensures you use the correct pnpm version specified in `package.json`:
+Corepack is included with Node.js 16.10+ and ensures the correct pnpm version:
 
 ```bash
 corepack enable
 ```
 
+After enabling, running `pnpm` commands will automatically use pnpm@9.0.0 as specified in `package.json`.
+
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-├── .changeset/              # Changesets configuration
-│   └── config.json          # Changeset settings (changelog, access, etc.)
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml           # Lint, test, build on PR/push
-│       ├── docs.yml         # Build & deploy docs to GitHub Pages
-│       └── release.yml      # Changesets release automation
-├── .husky/                  # Git hooks
-│   ├── commit-msg           # Commit message validation (optional)
-│   ├── pre-commit           # Runs lint-staged before commit
-│   └── pre-push             # Runs lint, typecheck, test before push
-├── docs/                    # VitePress documentation
+│       ├── ci.yml              # CI: lint, test, build, package checks
+│       ├── docs.yml            # Build and deploy docs to GitHub Pages
+│       └── release.yml         # Changesets: create Release PR or publish
+├── .husky/
+│   ├── pre-commit              # Runs lint-staged before commit
+│   └── pre-push                # Runs lint, typecheck, test, publint before push
+├── docs/
 │   ├── .vitepress/
-│   │   └── config.mts       # VitePress configuration
-│   ├── api-generated/       # Auto-generated API docs (TypeDoc)
-│   ├── api.md               # Manual API overview
-│   └── index.md             # Documentation homepage
+│   │   └── config.mts          # VitePress configuration
+│   ├── api-generated/          # TypeDoc output (auto-generated)
+│   ├── api.md                  # Manual API overview page
+│   └── index.md                # Documentation homepage
 ├── scripts/
-│   └── init-template.mjs    # Template initialization script
+│   └── init-template.mjs       # Template initialization script
 ├── src/
-│   └── index.ts             # Package entry point
+│   └── index.ts                # Package entry point
 ├── test/
-│   └── index.test.ts        # Test files
-├── dist/                    # Build output (generated)
-├── .gitignore
-├── CHANGELOG.md             # Auto-generated by Changesets
-├── eslint.config.mjs        # ESLint flat configuration
-├── LICENSE                  # MIT license
-├── package.json             # Package configuration
-├── pnpm-lock.yaml           # Lockfile
-├── README.md                # This file
-├── tsconfig.json            # TypeScript configuration (development)
-├── tsconfig.build.json      # TypeScript configuration (build)
-├── tsup.config.ts           # tsup bundler configuration
-├── typedoc.json             # TypeDoc configuration
-└── vitest.config.ts         # Vitest configuration
+│   └── index.test.ts           # Test files
+├── .editorconfig               # Editor formatting rules
+├── .gitignore                  # Git ignore patterns
+├── .prettierignore             # Prettier ignore patterns
+├── .prettierrc                 # Prettier configuration
+├── CHANGELOG.md                # Auto-generated by Changesets
+├── eslint.config.mjs           # ESLint flat configuration
+├── LICENSE                     # MIT license
+├── package.json                # Package manifest and scripts
+├── pnpm-lock.yaml              # Lockfile
+├── tsconfig.build.json         # TypeScript config for builds
+├── tsconfig.json               # TypeScript config for development
+├── tsup.config.ts              # tsup bundler configuration
+├── typedoc.json                # TypeDoc configuration
+└── vitest.config.ts            # Vitest configuration
 ```
+
+### Key Files
+
+| File/Folder           | Purpose                                                        |
+| --------------------- | -------------------------------------------------------------- |
+| `src/index.ts`        | Main entry point; export your public API here                  |
+| `test/`               | Test files; Vitest discovers `*.test.ts` files automatically   |
+| `docs/`               | VitePress documentation source                                 |
+| `docs/api-generated/` | TypeDoc Markdown output (do not edit manually)                 |
+| `tsup.config.ts`      | Configures build output formats, source maps, and tree-shaking |
+| `typedoc.json`        | Configures API doc generation                                  |
+| `.github/workflows/`  | CI/CD automation                                               |
 
 ---
 
-## 📜 Available Scripts
+## Scripts Reference
 
-### Core Development
+All scripts are defined in `package.json` and run via `pnpm run <script>`.
 
-| Command              | Description                           |
-| -------------------- | ------------------------------------- |
-| `pnpm run build`     | Build the package (ESM + CJS + types) |
-| `pnpm run dev`       | Build in watch mode                   |
-| `pnpm run typecheck` | Run TypeScript type checking          |
+### Build Scripts
+
+| Script      | Command                      | Description                                  |
+| ----------- | ---------------------------- | -------------------------------------------- |
+| `build`     | `tsup && pnpm run types:cjs` | Build ESM + CJS bundles with declarations    |
+| `types:cjs` | (internal)                   | Copies `.d.ts` to `.d.cts` for CJS consumers |
+| `dev`       | `tsup --watch`               | Build in watch mode for development          |
+
+### Type Checking
+
+| Script      | Command                               | Description                       |
+| ----------- | ------------------------------------- | --------------------------------- |
+| `typecheck` | `tsc -p tsconfig.build.json --noEmit` | Type-check without emitting files |
 
 ### Testing
 
-| Command                  | Description                    |
-| ------------------------ | ------------------------------ |
-| `pnpm run test`          | Run tests once                 |
-| `pnpm run test:watch`    | Run tests in watch mode        |
-| `pnpm run test:coverage` | Run tests with coverage report |
+| Script          | Command                 | Description                       |
+| --------------- | ----------------------- | --------------------------------- |
+| `test`          | `vitest run`            | Run tests once                    |
+| `test:watch`    | `vitest`                | Run tests in watch mode           |
+| `test:coverage` | `vitest run --coverage` | Run tests with V8 coverage report |
 
 ### Code Quality
 
-| Command                 | Description                                 |
-| ----------------------- | ------------------------------------------- |
-| `pnpm run lint`         | Run ESLint                                  |
-| `pnpm run lint:package` | Run publint (validate package.json exports) |
-| `pnpm run lint:deps`    | Run knip (find unused deps/exports)         |
-| `pnpm run lint:md`      | Run markdownlint                            |
-| `pnpm run format`       | Check formatting with Prettier              |
-| `pnpm run format:write` | Fix formatting with Prettier                |
+| Script         | Command                                                 | Description                                 |
+| -------------- | ------------------------------------------------------- | ------------------------------------------- |
+| `lint`         | `eslint .`                                              | Lint all files with ESLint                  |
+| `lint:package` | `publint`                                               | Validate package.json exports configuration |
+| `lint:deps`    | `knip`                                                  | Find unused dependencies and exports        |
+| `lint:md`      | `markdownlint-cli2 "**/*.md" "!**/node_modules/**" ...` | Lint Markdown files                         |
+| `format`       | `prettier . --check`                                    | Check formatting without modifying files    |
+| `format:write` | `prettier . --write`                                    | Fix formatting in all files                 |
 
 ### Documentation
 
-| Command                 | Description                        |
-| ----------------------- | ---------------------------------- |
-| `pnpm run docs:dev`     | Start VitePress dev server         |
-| `pnpm run docs:build`   | Build documentation for production |
-| `pnpm run docs:preview` | Preview built documentation        |
-| `pnpm run api:docs`     | Generate API docs with TypeDoc     |
+| Script         | Command                                     | Description                                |
+| -------------- | ------------------------------------------- | ------------------------------------------ |
+| `docs:dev`     | `vitepress dev docs`                        | Start VitePress dev server with hot reload |
+| `docs:build`   | `pnpm run api:docs && vitepress build docs` | Generate API docs and build static site    |
+| `docs:preview` | `vitepress preview docs`                    | Preview the built documentation locally    |
+| `api:docs`     | `typedoc`                                   | Generate API docs to `docs/api-generated/` |
 
 ### Release
 
-| Command                     | Description                        |
-| --------------------------- | ---------------------------------- |
-| `pnpm run changeset`        | Create a new changeset             |
-| `pnpm run version-packages` | Apply changesets and bump versions |
-| `pnpm run release`          | Publish to npm                     |
+| Script             | Command             | Description                                               |
+| ------------------ | ------------------- | --------------------------------------------------------- |
+| `changeset`        | `changeset`         | Create a new changeset file                               |
+| `version-packages` | `changeset version` | Apply changesets and bump version                         |
+| `release`          | `changeset publish` | Publish to npm                                            |
+| `prepublishOnly`   | (multiple checks)   | Runs lint, publint, typecheck, test, build before publish |
 
 ### Utilities
 
-| Command                  | Description                               |
-| ------------------------ | ----------------------------------------- |
-| `pnpm run init:template` | Initialize the template with your details |
-| `pnpm run prepare`       | Install Husky git hooks (runs on install) |
+| Script          | Command                            | Description                                       |
+| --------------- | ---------------------------------- | ------------------------------------------------- |
+| `init:template` | `node ./scripts/init-template.mjs` | Initialize template with your package details     |
+| `prepare`       | `husky`                            | Install Git hooks (runs automatically on install) |
 
 ---
 
-## 🔨 Build System (tsup)
+## Build and Outputs
 
-[tsup](https://tsup.egoist.dev/) is a zero-config TypeScript bundler powered by esbuild.
+### tsup Configuration
 
-### Configuration
-
-**tsup.config.ts:**
+The build is configured in `tsup.config.ts`:
 
 ```typescript
 import { defineConfig } from "tsup";
@@ -229,94 +247,66 @@ export default defineConfig({
   entry: ["src/index.ts"],
   format: ["esm", "cjs"],
   dts: true,
-  clean: true,
   sourcemap: true,
+  clean: true,
+  treeshake: true,
 });
 ```
 
 ### Build Output
 
+Running `pnpm run build` produces:
+
 ```
 dist/
-├── index.js      # ESM bundle
-├── index.cjs     # CommonJS bundle
-├── index.d.ts    # TypeScript declarations (ESM)
-├── index.d.cts   # TypeScript declarations (CJS)
-└── index.js.map  # Source maps
+├── index.js        # ESM bundle
+├── index.cjs       # CommonJS bundle
+├── index.d.ts      # TypeScript declarations (ESM)
+├── index.d.cts     # TypeScript declarations (CJS)
+├── index.js.map    # Source map (ESM)
+└── index.cjs.map   # Source map (CJS)
 ```
 
-### Dual Package Support
+### Package Exports
 
-The package supports both ESM and CommonJS consumers:
+The `package.json` exports field defines how consumers import your package:
+
+```json
+{
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  }
+}
+```
+
+### Consumer Usage
 
 ```javascript
-// ESM
-import { hello } from "your-package";
+// ESM (import)
+import { myFunction } from "your-package";
 
-// CommonJS
-const { hello } = require("your-package");
+// CommonJS (require)
+const { myFunction } = require("your-package");
 ```
+
+Both import styles resolve to the correct bundle with proper TypeScript types.
 
 ---
 
-## 🧪 Testing (Vitest)
-
-[Vitest](https://vitest.dev/) is a blazing-fast unit testing framework.
-
-### Configuration
-
-**vitest.config.ts:**
-
-```typescript
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  test: {
-    globals: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "html", "lcov"],
-    },
-  },
-});
-```
-
-### Writing Tests
-
-```typescript
-// test/index.test.ts
-import { describe, it, expect } from "vitest";
-import { hello } from "../src/index";
-
-describe("hello", () => {
-  it("should return greeting message", () => {
-    expect(hello("World")).toBe("Hello, World!");
-  });
-});
-```
-
-### Running Tests
-
-```bash
-# Run once
-pnpm run test
-
-# Watch mode
-pnpm run test:watch
-
-# With coverage
-pnpm run test:coverage
-```
-
----
-
-## 🔍 Code Quality
+## Code Quality
 
 ### ESLint
 
-ESLint 9 with flat config for TypeScript:
-
-**eslint.config.mjs:**
+ESLint 9 uses the flat config format in `eslint.config.mjs`:
 
 ```javascript
 import eslint from "@eslint/js";
@@ -333,9 +323,15 @@ export default tseslint.config(
 );
 ```
 
+Run linting:
+
+```bash
+pnpm run lint
+```
+
 ### Prettier
 
-Code formatting with Prettier:
+Prettier handles code formatting. Configuration is in `.prettierrc`:
 
 ```bash
 # Check formatting
@@ -345,47 +341,54 @@ pnpm run format
 pnpm run format:write
 ```
 
+ESLint and Prettier are integrated via `eslint-config-prettier` to avoid conflicts.
+
 ### publint
 
-Validates your `package.json` exports configuration:
+publint validates your `package.json` exports configuration to ensure consumers can correctly import your package:
 
 ```bash
 pnpm run lint:package
 ```
 
+Common issues detected:
+
+- Missing or incorrect `exports` paths
+- Type declaration mismatches
+- Invalid `main`/`module` fields
+
 ### knip
 
-Finds unused dependencies, exports, and files:
+knip finds unused dependencies, exports, and files:
 
 ```bash
 pnpm run lint:deps
 ```
 
----
+Review the output and remove any unused code or dependencies.
 
-## 🪝 Git Hooks (Husky + lint-staged)
+### markdownlint
 
-[Husky](https://typicode.github.io/husky/) enables Git hooks, and [lint-staged](https://github.com/lint-staged/lint-staged) runs linters on staged files.
+markdownlint ensures consistent Markdown formatting:
 
-### Automatic Setup
-
-Husky is installed automatically via the `prepare` script:
-
-```json
-{
-  "scripts": {
-    "prepare": "husky"
-  }
-}
+```bash
+pnpm run lint:md
 ```
 
-### Configured Hooks
+The `docs/api-generated/` folder is excluded since TypeDoc generates those files.
 
-| Hook           | File                | Actions                                  |
-| -------------- | ------------------- | ---------------------------------------- |
-| **pre-commit** | `.husky/pre-commit` | Runs `lint-staged` on staged files       |
-| **pre-push**   | `.husky/pre-push`   | Runs lint, typecheck, test, lint:package |
-| **commit-msg** | `.husky/commit-msg` | (Optional) Validate commit messages      |
+---
+
+## Git Hooks (Husky + lint-staged)
+
+### Overview
+
+Husky manages Git hooks, and lint-staged runs linters on staged files only.
+
+| Hook         | File                | What Runs                                              |
+| ------------ | ------------------- | ------------------------------------------------------ |
+| `pre-commit` | `.husky/pre-commit` | `pnpm lint-staged` (ESLint + Prettier on staged files) |
+| `pre-push`   | `.husky/pre-push`   | `lint`, `typecheck`, `test`, `lint:package`            |
 
 ### lint-staged Configuration
 
@@ -400,17 +403,27 @@ Defined in `package.json`:
 }
 ```
 
-### Hook Details
+### Installing Hooks
 
-**pre-commit** (`.husky/pre-commit`):
+Hooks are installed automatically via the `prepare` script when you run `pnpm install`. To manually reinstall:
+
+```bash
+pnpm run prepare
+```
+
+### Pre-commit Hook
+
+The pre-commit hook (`.husky/pre-commit`) runs:
 
 ```bash
 pnpm lint-staged
 ```
 
-Automatically fixes linting errors and formats staged files before commit.
+This automatically fixes linting errors and formats staged files before the commit is created.
 
-**pre-push** (`.husky/pre-push`):
+### Pre-push Hook
+
+The pre-push hook (`.husky/pre-push`) runs:
 
 ```bash
 pnpm run lint
@@ -419,29 +432,33 @@ pnpm run test
 pnpm run lint:package
 ```
 
-Ensures all quality gates pass before pushing to remote.
+This ensures all quality gates pass before code is pushed to the remote repository.
 
-### Bypassing Hooks (Emergency Only)
+### Bypassing Hooks
+
+In emergencies, you can skip hooks:
 
 ```bash
-# Skip pre-commit hook
+# Skip pre-commit
 git commit --no-verify -m "emergency fix"
 
-# Skip pre-push hook
+# Skip pre-push
 git push --no-verify
 ```
 
-> ⚠️ **Warning**: Only use `--no-verify` in emergencies. CI will still run all checks.
+> **Warning**: Use `--no-verify` sparingly. CI will still run all checks.
 
 ---
 
-## 📚 Documentation (VitePress + TypeDoc)
+## Documentation (VitePress)
 
-### VitePress
+### Overview
 
-[VitePress](https://vitepress.dev/) powers the documentation site.
+VitePress powers the documentation site. Documentation source files are in the `docs/` folder.
 
-**Configuration** (`docs/.vitepress/config.mts`):
+### Configuration
+
+VitePress is configured in `docs/.vitepress/config.mts`:
 
 ```typescript
 import { defineConfig } from "vitepress";
@@ -449,8 +466,6 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "pkg_name",
   description: "pkg_name documentation",
-  // For GitHub Pages with custom repo name, add:
-  // base: "/your-repo-name/",
   themeConfig: {
     nav: [
       { text: "Guide", link: "/" },
@@ -473,83 +488,209 @@ export default defineConfig({
 });
 ```
 
-### TypeDoc
+### Development
 
-[TypeDoc](https://typedoc.org/) generates API documentation from TSDoc comments.
+Start the dev server with hot reload:
 
-**Configuration** (`typedoc.json`):
+```bash
+pnpm run docs:dev
+```
+
+The site is available at `http://localhost:5173/`.
+
+### Building
+
+Build the static site:
+
+```bash
+pnpm run docs:build
+```
+
+Output is written to `docs/.vitepress/dist/`.
+
+### Preview
+
+Preview the built site locally:
+
+```bash
+pnpm run docs:preview
+```
+
+### Adding Pages
+
+1. Create a new `.md` file in `docs/` (e.g., `docs/guide/installation.md`)
+2. Add the page to the sidebar in `docs/.vitepress/config.mts`
+3. Link to it using relative paths: `[Installation](/guide/installation)`
+
+---
+
+## API Docs (TypeDoc)
+
+### Overview
+
+TypeDoc generates API documentation from TSDoc comments in your source code. The `typedoc-plugin-markdown` outputs Markdown files that integrate with VitePress.
+
+### Configuration
+
+TypeDoc is configured in `typedoc.json`:
 
 ```json
 {
   "entryPoints": ["src/index.ts"],
   "out": "docs/api-generated",
-  "plugin": ["typedoc-plugin-markdown"]
+  "name": "pkg_name API",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "hideBreadcrumbs": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "entryFileName": "index.md",
+  "sort": ["source-order"]
 }
 ```
 
-### GitHub Pages Setup
-
-> **Important**: If your repository is not at the root (e.g., `username.github.io/repo-name`), you must set the `base` option in VitePress config:
-
-```typescript
-// docs/.vitepress/config.mts
-export default defineConfig({
-  base: "/NPM-Package/", // Replace with your repo name
-  // ...
-});
-```
-
-### Local Development
+### Generating API Docs
 
 ```bash
-# Start documentation dev server
-pnpm run docs:dev
-
-# Build documentation
-pnpm run docs:build
-
-# Preview built docs
-pnpm run docs:preview
+pnpm run api:docs
 ```
+
+This generates Markdown files in `docs/api-generated/`.
+
+### Integration with VitePress
+
+The `docs:build` script runs `api:docs` first:
+
+```bash
+pnpm run docs:build  # Runs api:docs, then vitepress build
+```
+
+API docs are accessible at:
+
+- `/api` — Manual overview page (`docs/api.md`)
+- `/api-generated/` — Auto-generated reference (`docs/api-generated/index.md`)
+
+### Writing TSDoc Comments
+
+Document your exports with TSDoc:
+
+````typescript
+/**
+ * Greets a user by name.
+ *
+ * @param name - The name to greet
+ * @returns A greeting message
+ *
+ * @example
+ * ```typescript
+ * hello("World"); // "Hello, World!"
+ * ```
+ */
+export function hello(name: string): string {
+  return `Hello, ${name}!`;
+}
+````
+
+### Common Issues
+
+**Missing index.md**: Ensure `entryFileName` in `typedoc.json` is set to `"index.md"`.
+
+**Broken links**: If links to API pages return 404, verify the sidebar configuration points to `/api-generated/` (with trailing slash for directory index).
 
 ---
 
-## 📦 Versioning & Publishing (Changesets)
+## CI/CD (GitHub Actions)
 
-[Changesets](https://github.com/changesets/changesets) manages versioning and changelogs.
+Three workflows automate testing, documentation, and releases.
 
-### Workflow Overview
+### CI Workflow (`.github/workflows/ci.yml`)
 
+**Triggers**: Pull requests, pushes to `main`
+
+**Steps**:
+
+1. Checkout code
+2. Setup Node.js 20 with pnpm cache
+3. Enable Corepack
+4. Install dependencies with `--frozen-lockfile`
+5. Run ESLint (`pnpm run lint`)
+6. Run TypeScript type checking (`pnpm run typecheck`)
+7. Run Vitest tests (`pnpm run test`)
+8. Build with tsup (`pnpm run build`)
+9. Run publint (`pnpm run lint:package`)
+10. Run knip (`pnpm run lint:deps`)
+11. Run markdownlint (`pnpm run lint:md`)
+12. Build documentation (`pnpm run docs:build`)
+
+### Docs Workflow (`.github/workflows/docs.yml`)
+
+**Triggers**: Pushes to `main`, manual dispatch
+
+**Steps**:
+
+1. Build documentation with VitePress
+2. Upload as Pages artifact
+3. Deploy to GitHub Pages
+
+**Permissions required**: `pages: write`, `id-token: write`
+
+### Release Workflow (`.github/workflows/release.yml`)
+
+**Triggers**: Pushes to `main`
+
+**Steps**:
+
+1. Checkout with full history (`fetch-depth: 0`)
+2. Setup Node.js with npm registry
+3. Enable Corepack
+4. Install dependencies
+5. Run quality gates (lint, typecheck, test, build)
+6. Run `changesets/action`:
+   - If changesets exist: Creates a "Version Packages" PR
+   - If Version Packages PR is merged: Publishes to npm
+
+**Required secrets**:
+
+| Secret         | Description                                   |
+| -------------- | --------------------------------------------- |
+| `GITHUB_TOKEN` | Automatic; used for creating PRs              |
+| `NPM_TOKEN`    | npm automation token; required for publishing |
+
+### Corepack in CI
+
+All workflows enable Corepack to use the pnpm version from `package.json`:
+
+```yaml
+- name: Enable Corepack
+  run: corepack enable
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    CHANGESETS WORKFLOW                       │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1. DEVELOP                                                  │
-│     └─> Make changes to your code                           │
-│                                                              │
-│  2. CREATE CHANGESET                                         │
-│     └─> pnpm run changeset                                  │
-│         • Select change type (patch/minor/major)            │
-│         • Write change description                          │
-│         • Creates .changeset/*.md file                      │
-│                                                              │
-│  3. COMMIT & PUSH                                           │
-│     └─> Git commit includes changeset file                  │
-│                                                              │
-│  4. AUTOMATED (GitHub Actions)                              │
-│     ├─> Creates "Version Packages" PR with:                 │
-│     │   • Version bumps in package.json                     │
-│     │   • Updated CHANGELOG.md                              │
-│     │                                                        │
-│     └─> On PR merge: publishes to npm automatically         │
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
+
+### Frozen Lockfile
+
+CI uses `--frozen-lockfile` to ensure reproducible installs:
+
+```yaml
+- name: Install dependencies
+  run: pnpm install --frozen-lockfile
 ```
 
-### Step-by-Step Guide
+If this fails, your lockfile is out of sync. See [Troubleshooting](#troubleshooting).
 
-#### 1. Create a Changeset
+---
+
+## Releases and Versioning (Changesets)
+
+### Overview
+
+Changesets manages versioning, changelogs, and npm publishing. The workflow:
+
+1. Create changesets during development
+2. Push to `main`
+3. CI creates a "Version Packages" PR
+4. Merge the PR to publish
+
+### Creating a Changeset
 
 After making changes, create a changeset:
 
@@ -557,18 +698,18 @@ After making changes, create a changeset:
 pnpm run changeset
 ```
 
-You'll be prompted to:
+You will be prompted to:
 
-1. **Select packages** (press `Space` to select, `Enter` to confirm)
-2. **Choose bump type**:
-   - `patch` (0.0.X) – Bug fixes, documentation
-   - `minor` (0.X.0) – New features, backward-compatible
-   - `major` (X.0.0) – Breaking changes
-3. **Write a summary** – Describe the changes (appears in CHANGELOG)
+1. Select the packages to include
+2. Choose a bump type:
+   - **patch** (0.0.X): Bug fixes, documentation updates
+   - **minor** (0.X.0): New features, backward-compatible changes
+   - **major** (X.0.0): Breaking changes
+3. Write a summary (appears in CHANGELOG.md)
 
-#### 2. Changeset File
+### Changeset Files
 
-A markdown file is created in `.changeset/`:
+Changesets are stored as Markdown files in `.changeset/`:
 
 ```markdown
 ---
@@ -578,7 +719,7 @@ A markdown file is created in `.changeset/`:
 Added new utility function for data transformation.
 ```
 
-#### 3. Commit the Changeset
+Commit these files with your changes:
 
 ```bash
 git add .changeset/
@@ -586,121 +727,146 @@ git commit -m "feat: add data transformation utility"
 git push
 ```
 
-#### 4. Automated Release (CI)
+### Automated Release Process
 
-The `release.yml` workflow:
+When you push to `main`:
 
-1. **Detects changesets** on push to `main`
-2. **Creates/updates** a "Version Packages" PR with:
+1. **If changesets exist**: The release workflow creates a "Version Packages" PR containing:
    - Bumped version in `package.json`
    - Updated `CHANGELOG.md`
-   - Consumed changeset files
-3. **When you merge** the Version Packages PR:
-   - Publishes to npm automatically
-   - Creates a GitHub release
+   - Deleted changeset files
 
-### Configuration
+2. **When you merge the Version Packages PR**: The workflow publishes to npm.
 
-**.changeset/config.json:**
+### Required Secrets
 
-```json
-{
-  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
-  "fixed": [],
-  "linked": [],
-  "access": "public",
-  "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": []
-}
-```
+Add `NPM_TOKEN` to your repository secrets:
+
+1. Go to [npmjs.com](https://www.npmjs.com/) → Access Tokens
+2. Generate a new **Automation** token
+3. In GitHub: Settings → Secrets and variables → Actions
+4. Add `NPM_TOKEN` with the token value
+
+### CHANGELOG.md
+
+`CHANGELOG.md` is auto-generated by Changesets. Do not edit it manually.
 
 ### Manual Release (Not Recommended)
 
-If you need to release manually:
+If you must release manually:
 
 ```bash
-# Apply changesets and bump versions
-pnpm run version-packages
-
-# Build and publish
-pnpm run build
-pnpm run release
+pnpm run version-packages   # Apply changesets, bump version
+pnpm run build              # Build the package
+pnpm run release            # Publish to npm
 ```
 
 ---
 
-## 🔄 CI/CD (GitHub Actions)
+## GitHub Pages Setup
 
-Three workflows automate quality checks, documentation, and releases.
+### Enable GitHub Pages
 
-### 1. CI Workflow (`ci.yml`)
+1. Go to your repository → Settings → Pages
+2. Under "Build and deployment", set Source to **GitHub Actions**
+3. Save
 
-**Triggers**: Push to `main`, Pull Requests
+The `docs.yml` workflow will automatically deploy on pushes to `main`.
 
-**Jobs**:
+### VitePress Base Path
 
-| Step                | Command                 |
-| ------------------- | ----------------------- |
-| Lint (ESLint)       | `pnpm run lint`         |
-| Typecheck (tsc)     | `pnpm run typecheck`    |
-| Unit tests (Vitest) | `pnpm run test`         |
-| Build (tsup)        | `pnpm run build`        |
-| Package lint        | `pnpm run lint:package` |
-| Unused deps (knip)  | `pnpm run lint:deps`    |
-| Markdown lint       | `pnpm run lint:md`      |
-| Docs build          | `pnpm run docs:build`   |
+If your repository is not at the root domain (e.g., `username.github.io/repo-name`), configure the `base` option in `docs/.vitepress/config.mts`:
 
-### 2. Docs Workflow (`docs.yml`)
+```typescript
+export default defineConfig({
+  base: "/NPM-Package/", // Replace with your repository name
+  // ...
+});
+```
 
-**Triggers**: Push to `main`, Manual dispatch
+Without this, assets and links will return 404.
 
-**Jobs**:
+### Deployment URL
 
-1. **Build**: Generates documentation with VitePress
-2. **Deploy**: Publishes to GitHub Pages
+After deployment, your docs are available at:
 
-**Requirements**:
-
-- Enable GitHub Pages in repository settings
-- Set source to "GitHub Actions"
-
-### 3. Release Workflow (`release.yml`)
-
-**Triggers**: Push to `main`
-
-**Jobs**:
-
-1. **Quality Gates**: Runs lint, typecheck, test, build
-2. **Changesets Action**:
-   - If changesets exist: Creates "Version Packages" PR
-   - If Version Packages PR merged: Publishes to npm
-
-**Required Secrets**:
-
-| Secret         | Description                       |
-| -------------- | --------------------------------- |
-| `GITHUB_TOKEN` | Automatic (for PR creation)       |
-| `NPM_TOKEN`    | npm access token (for publishing) |
-
-### Setting Up NPM_TOKEN
-
-1. Go to [npmjs.com](https://www.npmjs.com/) → Account → Access Tokens
-2. Generate a new **Automation** token
-3. In GitHub repo: Settings → Secrets → Actions
-4. Add `NPM_TOKEN` with the token value
+```
+https://<username>.github.io/<repo-name>/
+```
 
 ---
 
-## 🔧 Troubleshooting
+## Customizing the Template
 
-### "Frozen lockfile" error in CI
+### Running the Initialization Script
+
+The easiest way to customize is the init script:
+
+```bash
+pnpm run init:template
+```
+
+This prompts for:
+
+- **Package name**: Your npm package name
+- **Description**: Package description
+- **Author**: Your name
+- **GitHub username**: For repository URLs
+
+The script updates:
+
+- `package.json` (name, description, author, repository, bugs, homepage)
+- `LICENSE` (copyright holder)
+- `docs/.vitepress/config.mts` (title, description)
+- `typedoc.json` (name)
+
+### Manual Customization
+
+If you prefer manual updates, replace these placeholders:
+
+| Placeholder       | Location                         | Replace With         |
+| ----------------- | -------------------------------- | -------------------- |
+| `pkg_name`        | package.json, typedoc.json, docs | Your package name    |
+| `pkg_name_author` | package.json, LICENSE            | Your name            |
+| `MoaazKHASSAWNEH` | package.json (repository URL)    | Your GitHub username |
+| `NPM-Package`     | package.json (repository URL)    | Your repository name |
+
+### Updating Repository Fields
+
+Ensure these fields in `package.json` match your repository:
+
+```json
+{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/YOUR_REPO.git"
+  },
+  "bugs": {
+    "url": "https://github.com/YOUR_USERNAME/YOUR_REPO/issues"
+  },
+  "homepage": "https://github.com/YOUR_USERNAME/YOUR_REPO#readme"
+}
+```
+
+### Keywords
+
+Update the `keywords` array for npm discoverability:
+
+```json
+{
+  "keywords": ["typescript", "utility", "your-keyword"]
+}
+```
+
+---
+
+## Troubleshooting
+
+### `pnpm install --frozen-lockfile` fails in CI
 
 **Error**: `ERR_PNPM_FROZEN_LOCKFILE_WITH_OUTDATED_LOCKFILE`
 
-**Cause**: `pnpm-lock.yaml` is out of sync with `package.json`
+**Cause**: `pnpm-lock.yaml` is out of sync with `package.json`.
 
 **Solution**:
 
@@ -708,47 +874,35 @@ Three workflows automate quality checks, documentation, and releases.
 pnpm install
 git add pnpm-lock.yaml
 git commit -m "chore: update lockfile"
+git push
 ```
 
-### Documentation 404 on GitHub Pages
+### publint warnings about exports
 
-**Cause**: Missing `base` path in VitePress config
-
-**Solution**: Add the base path in `docs/.vitepress/config.mts`:
-
-```typescript
-export default defineConfig({
-  base: "/your-repo-name/", // Must match your GitHub repo name
-  // ...
-});
-```
-
-### NPM_TOKEN missing error
-
-**Error**: `NODE_AUTH_TOKEN` is not set
-
-**Cause**: npm token not configured in GitHub secrets
-
-**Solution**:
-
-1. Create an npm automation token at npmjs.com
-2. Add it as `NPM_TOKEN` in GitHub repository secrets
-
-### publint warnings
-
-**Warning**: Package exports issues
-
-**Cause**: `package.json` exports don't match actual files
+**Cause**: `package.json` exports don't match files in `dist/`.
 
 **Solution**:
 
 1. Run `pnpm run build` to generate dist files
-2. Verify `exports` field matches generated files
+2. Verify `exports` paths match actual files
 3. Run `pnpm run lint:package` to validate
+
+### Documentation 404 on GitHub Pages
+
+**Cause**: Missing or incorrect `base` path in VitePress config.
+
+**Solution**: Set `base` in `docs/.vitepress/config.mts`:
+
+```typescript
+export default defineConfig({
+  base: "/your-repo-name/",
+  // ...
+});
+```
 
 ### Husky hooks not running
 
-**Cause**: Hooks not installed or Git not initialized
+**Cause**: Hooks not installed, or Git not initialized.
 
 **Solution**:
 
@@ -760,798 +914,72 @@ git init
 pnpm run prepare
 ```
 
-### Tests fail in CI but pass locally
+**On Windows / Git Bash**: Ensure you're using Git Bash or a compatible terminal. Some terminals may not execute hooks correctly.
 
-**Cause**: Environment differences or missing dependencies
+### Husky hooks not running on Windows
+
+**Cause**: Windows line endings or shell issues.
 
 **Solution**:
 
-1. Ensure all dependencies are in `devDependencies`
-2. Run with `--frozen-lockfile` locally: `pnpm install --frozen-lockfile`
-3. Check Node.js version matches CI (≥20)
+1. Ensure `.husky/` files use LF line endings (not CRLF)
+2. Run from Git Bash, not PowerShell or CMD
+3. Reinstall hooks: `pnpm run prepare`
 
----
+### TypeDoc output missing index.md
 
-## 📄 License
+**Cause**: `entryFileName` not set in `typedoc.json`.
 
-MIT License © 2026 [Moaaz KHASSAWNEH](https://github.com/MoaazKHASSAWNEH)
-
-See [LICENSE](LICENSE) for details.
-
----
-
----
-
-# 📦 Modèle de Package NPM
-
-> Un starter TypeScript moderne et prêt pour la production, conçu pour publier des packages npm.
-
----
-
-## Table des matières
-
-- [Démarrage rapide](#-démarrage-rapide)
-- [Fonctionnalités](#-fonctionnalités)
-- [Prérequis](#-prérequis)
-- [Structure du projet](#-structure-du-projet)
-- [Scripts disponibles](#-scripts-disponibles)
-- [Système de build (tsup)](#-système-de-build-tsup)
-- [Tests (Vitest)](#-tests-vitest)
-- [Qualité du code](#-qualité-du-code)
-- [Hooks Git (Husky + lint-staged)](#-hooks-git-husky--lint-staged)
-- [Documentation (VitePress + TypeDoc)](#-documentation-vitepress--typedoc)
-- [Versionnage et publication (Changesets)](#-versionnage-et-publication-changesets)
-- [CI/CD (GitHub Actions)](#-cicd-github-actions)
-- [Dépannage](#-dépannage)
-- [Licence](#-licence)
-
----
-
-## 🚀 Démarrage rapide
-
-### 1. Utiliser ce modèle
-
-```bash
-# Cloner le dépôt
-git clone https://github.com/MoaazKHASSAWNEH/NPM-Package.git mon-package
-cd mon-package
-
-# Supprimer l'historique git existant et recommencer à zéro
-rm -rf .git
-git init
-```
-
-### 2. Activer Corepack et installer les dépendances
-
-```bash
-corepack enable
-pnpm install
-```
-
-### 3. Initialiser votre package
-
-```bash
-pnpm run init:template
-```
-
-Ce script interactif vous demandera :
-
-- **Nom du package** (ex: `ma-super-lib`)
-- **Description du package**
-- **Nom de l'auteur**
-- **Nom d'utilisateur GitHub** (pour l'URL du dépôt)
-
-Il met automatiquement à jour `package.json`, `LICENSE`, les configs de documentation et supprime le script d'initialisation.
-
-### 4. Commencer à développer
-
-```bash
-# Build une fois
-pnpm run build
-
-# Mode watch (rebuild automatique)
-pnpm run dev
-
-# Lancer les tests
-pnpm run test
-
-# Tests en mode watch
-pnpm run test:watch
-```
-
----
-
-## ✨ Fonctionnalités
-
-| Catégorie         | Outils et technologies                           |
-| ----------------- | ------------------------------------------------ |
-| **Langage**       | TypeScript 5.x avec mode strict                  |
-| **Build**         | tsup (sortie double ESM + CJS)                   |
-| **Tests**         | Vitest avec couverture (V8)                      |
-| **Lint**          | ESLint 9 (flat config) + Prettier                |
-| **Documentation** | VitePress + TypeDoc (docs API auto-générées)     |
-| **Versionnage**   | Changesets (versionnage sémantique & changelogs) |
-| **Hooks Git**     | Husky + lint-staged (vérifications automatiques) |
-| **CI/CD**         | GitHub Actions (test, docs, release)             |
-| **Vérifications** | publint + knip (validation exports, code mort)   |
-
----
-
-## 📋 Prérequis
-
-| Outil       | Version | Notes                |
-| ----------- | ------- | -------------------- |
-| **Node.js** | ≥ 20    | LTS recommandé       |
-| **pnpm**    | ≥ 9.0.0 | Géré via Corepack    |
-| **Git**     | ≥ 2.x   | Pour les hooks Husky |
-
-### Activer Corepack
-
-Corepack garantit l'utilisation de la bonne version de pnpm spécifiée dans `package.json` :
-
-```bash
-corepack enable
-```
-
----
-
-## 📁 Structure du projet
-
-```
-├── .changeset/              # Configuration Changesets
-│   └── config.json          # Paramètres (changelog, access, etc.)
-├── .github/
-│   └── workflows/
-│       ├── ci.yml           # Lint, test, build sur PR/push
-│       ├── docs.yml         # Build & déploiement docs GitHub Pages
-│       └── release.yml      # Automatisation release Changesets
-├── .husky/                  # Hooks Git
-│   ├── commit-msg           # Validation message de commit (optionnel)
-│   ├── pre-commit           # Exécute lint-staged avant commit
-│   └── pre-push             # Exécute lint, typecheck, test avant push
-├── docs/                    # Documentation VitePress
-│   ├── .vitepress/
-│   │   └── config.mts       # Configuration VitePress
-│   ├── api-generated/       # Docs API auto-générées (TypeDoc)
-│   ├── api.md               # Aperçu API manuel
-│   └── index.md             # Page d'accueil documentation
-├── scripts/
-│   └── init-template.mjs    # Script d'initialisation du modèle
-├── src/
-│   └── index.ts             # Point d'entrée du package
-├── test/
-│   └── index.test.ts        # Fichiers de test
-├── dist/                    # Sortie du build (généré)
-├── CHANGELOG.md             # Auto-généré par Changesets
-├── eslint.config.mjs        # Configuration ESLint flat
-├── LICENSE                  # Licence MIT
-├── package.json             # Configuration du package
-├── pnpm-lock.yaml           # Fichier de verrouillage
-├── README.md                # Ce fichier
-├── tsconfig.json            # Configuration TypeScript (développement)
-├── tsconfig.build.json      # Configuration TypeScript (build)
-├── tsup.config.ts           # Configuration du bundler tsup
-├── typedoc.json             # Configuration TypeDoc
-└── vitest.config.ts         # Configuration Vitest
-```
-
----
-
-## 📜 Scripts disponibles
-
-### Développement principal
-
-| Commande             | Description                          |
-| -------------------- | ------------------------------------ |
-| `pnpm run build`     | Build le package (ESM + CJS + types) |
-| `pnpm run dev`       | Build en mode watch                  |
-| `pnpm run typecheck` | Vérification des types TypeScript    |
-
-### Tests
-
-| Commande                 | Description                      |
-| ------------------------ | -------------------------------- |
-| `pnpm run test`          | Lancer les tests une fois        |
-| `pnpm run test:watch`    | Tests en mode watch              |
-| `pnpm run test:coverage` | Tests avec rapport de couverture |
-
-### Qualité du code
-
-| Commande                | Description                                     |
-| ----------------------- | ----------------------------------------------- |
-| `pnpm run lint`         | Exécuter ESLint                                 |
-| `pnpm run lint:package` | Exécuter publint (valider exports package.json) |
-| `pnpm run lint:deps`    | Exécuter knip (trouver deps/exports inutilisés) |
-| `pnpm run lint:md`      | Exécuter markdownlint                           |
-| `pnpm run format`       | Vérifier le formatage avec Prettier             |
-| `pnpm run format:write` | Corriger le formatage avec Prettier             |
-
-### Documentation
-
-| Commande                | Description                            |
-| ----------------------- | -------------------------------------- |
-| `pnpm run docs:dev`     | Démarrer le serveur de dev VitePress   |
-| `pnpm run docs:build`   | Build la documentation pour production |
-| `pnpm run docs:preview` | Prévisualiser la documentation buildée |
-| `pnpm run api:docs`     | Générer les docs API avec TypeDoc      |
-
-### Release
-
-| Commande                    | Description                               |
-| --------------------------- | ----------------------------------------- |
-| `pnpm run changeset`        | Créer un nouveau changeset                |
-| `pnpm run version-packages` | Appliquer les changesets et bump versions |
-| `pnpm run release`          | Publier sur npm                           |
-
-### Utilitaires
-
-| Commande                 | Description                                 |
-| ------------------------ | ------------------------------------------- |
-| `pnpm run init:template` | Initialiser le modèle avec vos informations |
-| `pnpm run prepare`       | Installer les hooks Husky (au install)      |
-
----
-
-## 🔨 Système de build (tsup)
-
-[tsup](https://tsup.egoist.dev/) est un bundler TypeScript zero-config propulsé par esbuild.
-
-### Configuration
-
-**tsup.config.ts :**
-
-```typescript
-import { defineConfig } from "tsup";
-
-export default defineConfig({
-  entry: ["src/index.ts"],
-  format: ["esm", "cjs"],
-  dts: true,
-  clean: true,
-  sourcemap: true,
-});
-```
-
-### Sortie du build
-
-```
-dist/
-├── index.js      # Bundle ESM
-├── index.cjs     # Bundle CommonJS
-├── index.d.ts    # Déclarations TypeScript (ESM)
-├── index.d.cts   # Déclarations TypeScript (CJS)
-└── index.js.map  # Source maps
-```
-
-### Support double package
-
-Le package supporte les consommateurs ESM et CommonJS :
-
-```javascript
-// ESM
-import { hello } from "your-package";
-
-// CommonJS
-const { hello } = require("your-package");
-```
-
----
-
-## 🧪 Tests (Vitest)
-
-[Vitest](https://vitest.dev/) est un framework de tests unitaires ultra-rapide.
-
-### Configuration
-
-**vitest.config.ts :**
-
-```typescript
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  test: {
-    globals: true,
-    coverage: {
-      provider: "v8",
-      reporter: ["text", "html", "lcov"],
-    },
-  },
-});
-```
-
-### Écrire des tests
-
-```typescript
-// test/index.test.ts
-import { describe, it, expect } from "vitest";
-import { hello } from "../src/index";
-
-describe("hello", () => {
-  it("devrait retourner un message de salutation", () => {
-    expect(hello("World")).toBe("Hello, World!");
-  });
-});
-```
-
-### Lancer les tests
-
-```bash
-# Une fois
-pnpm run test
-
-# Mode watch
-pnpm run test:watch
-
-# Avec couverture
-pnpm run test:coverage
-```
-
----
-
-## 🔍 Qualité du code
-
-### ESLint
-
-ESLint 9 avec flat config pour TypeScript :
-
-**eslint.config.mjs :**
-
-```javascript
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import prettierConfig from "eslint-config-prettier";
-
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
-  prettierConfig,
-  {
-    ignores: ["dist/", "docs/.vitepress/", "coverage/"],
-  }
-);
-```
-
-### Prettier
-
-Formatage du code avec Prettier :
-
-```bash
-# Vérifier le formatage
-pnpm run format
-
-# Corriger le formatage
-pnpm run format:write
-```
-
-### publint
-
-Valide la configuration des exports de votre `package.json` :
-
-```bash
-pnpm run lint:package
-```
-
-### knip
-
-Trouve les dépendances, exports et fichiers inutilisés :
-
-```bash
-pnpm run lint:deps
-```
-
----
-
-## 🪝 Hooks Git (Husky + lint-staged)
-
-[Husky](https://typicode.github.io/husky/) active les hooks Git, et [lint-staged](https://github.com/lint-staged/lint-staged) exécute les linters sur les fichiers stagés.
-
-### Installation automatique
-
-Husky est installé automatiquement via le script `prepare` :
+**Solution**: Ensure `typedoc.json` includes:
 
 ```json
 {
-  "scripts": {
-    "prepare": "husky"
-  }
+  "entryFileName": "index.md"
 }
 ```
 
-### Hooks configurés
+Regenerate: `pnpm run api:docs`
 
-| Hook           | Fichier             | Actions                                     |
-| -------------- | ------------------- | ------------------------------------------- |
-| **pre-commit** | `.husky/pre-commit` | Exécute `lint-staged` sur fichiers stagés   |
-| **pre-push**   | `.husky/pre-push`   | Exécute lint, typecheck, test, lint:package |
-| **commit-msg** | `.husky/commit-msg` | (Optionnel) Valide les messages de commit   |
+### Tests fail in CI but pass locally
 
-### Configuration lint-staged
+**Causes**:
 
-Définie dans `package.json` :
+- Environment differences
+- Dependencies not in lockfile
+- Different Node.js version
 
-```json
-{
-  "lint-staged": {
-    "*.{ts,tsx,js,mjs,cjs}": ["eslint --fix", "prettier --write"],
-    "*.{md,json,yml,yaml}": ["prettier --write"]
-  }
-}
-```
+**Solutions**:
 
-### Détails des hooks
+1. Run with frozen lockfile locally: `pnpm install --frozen-lockfile`
+2. Ensure Node.js version matches CI (>= 20)
+3. Commit any lockfile changes
 
-**pre-commit** (`.husky/pre-commit`) :
+### NPM_TOKEN error during release
 
-```bash
-pnpm lint-staged
-```
+**Error**: `NODE_AUTH_TOKEN` is not set.
 
-Corrige automatiquement les erreurs de lint et formate les fichiers stagés avant le commit.
+**Solution**:
 
-**pre-push** (`.husky/pre-push`) :
+1. Create an npm automation token at npmjs.com
+2. Add it as `NPM_TOKEN` in GitHub repository secrets (Settings → Secrets → Actions)
 
-```bash
-pnpm run lint
-pnpm run typecheck
-pnpm run test
-pnpm run lint:package
-```
+### Changesets not creating Release PR
 
-S'assure que toutes les vérifications passent avant de pusher.
+**Causes**:
 
-### Contourner les hooks (urgence uniquement)
+- No changeset files in `.changeset/`
+- Workflow permissions issue
 
-```bash
-# Ignorer le hook pre-commit
-git commit --no-verify -m "correctif urgent"
+**Solutions**:
 
-# Ignorer le hook pre-push
-git push --no-verify
-```
-
-> ⚠️ **Attention** : N'utilisez `--no-verify` qu'en cas d'urgence. La CI exécutera quand même toutes les vérifications.
+1. Create a changeset: `pnpm run changeset`
+2. Verify workflow has `contents: write` and `pull-requests: write` permissions
+3. Check Actions tab for workflow errors
 
 ---
 
-## 📚 Documentation (VitePress + TypeDoc)
+## License
 
-### VitePress
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for the full text.
 
-[VitePress](https://vitepress.dev/) propulse le site de documentation.
-
-**Configuration** (`docs/.vitepress/config.mts`) :
-
-```typescript
-import { defineConfig } from "vitepress";
-
-export default defineConfig({
-  title: "pkg_name",
-  description: "pkg_name documentation",
-  // Pour GitHub Pages avec un nom de repo personnalisé, ajoutez :
-  // base: "/nom-de-votre-repo/",
-  themeConfig: {
-    nav: [
-      { text: "Guide", link: "/" },
-      { text: "API", link: "/api" },
-    ],
-    sidebar: [
-      {
-        text: "Démarrage",
-        items: [{ text: "Aperçu", link: "/" }],
-      },
-      {
-        text: "Référence",
-        items: [
-          { text: "API (Aperçu)", link: "/api" },
-          { text: "API (Générée)", link: "/api-generated/" },
-        ],
-      },
-    ],
-  },
-});
-```
-
-### TypeDoc
-
-[TypeDoc](https://typedoc.org/) génère la documentation API à partir des commentaires TSDoc.
-
-**Configuration** (`typedoc.json`) :
-
-```json
-{
-  "entryPoints": ["src/index.ts"],
-  "out": "docs/api-generated",
-  "plugin": ["typedoc-plugin-markdown"]
-}
-```
-
-### Configuration GitHub Pages
-
-> **Important** : Si votre dépôt n'est pas à la racine (ex: `username.github.io/nom-repo`), vous devez définir l'option `base` dans la config VitePress :
-
-```typescript
-// docs/.vitepress/config.mts
-export default defineConfig({
-  base: "/NPM-Package/", // Remplacez par le nom de votre repo
-  // ...
-});
-```
-
-### Développement local
-
-```bash
-# Démarrer le serveur de dev
-pnpm run docs:dev
-
-# Build la documentation
-pnpm run docs:build
-
-# Prévisualiser les docs buildées
-pnpm run docs:preview
-```
-
----
-
-## 📦 Versionnage et publication (Changesets)
-
-[Changesets](https://github.com/changesets/changesets) gère le versionnage et les changelogs.
-
-### Vue d'ensemble du workflow
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    WORKFLOW CHANGESETS                       │
-├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  1. DÉVELOPPER                                               │
-│     └─> Apporter des modifications au code                  │
-│                                                              │
-│  2. CRÉER UN CHANGESET                                       │
-│     └─> pnpm run changeset                                  │
-│         • Sélectionner le type (patch/minor/major)          │
-│         • Écrire la description                             │
-│         • Crée un fichier .changeset/*.md                   │
-│                                                              │
-│  3. COMMIT & PUSH                                           │
-│     └─> Le commit Git inclut le fichier changeset           │
-│                                                              │
-│  4. AUTOMATISÉ (GitHub Actions)                             │
-│     ├─> Crée une PR "Version Packages" avec :               │
-│     │   • Bump de version dans package.json                 │
-│     │   • CHANGELOG.md mis à jour                           │
-│     │                                                        │
-│     └─> À la fusion de la PR : publie sur npm automatiquement│
-│                                                              │
-└─────────────────────────────────────────────────────────────┘
-```
-
-### Guide étape par étape
-
-#### 1. Créer un changeset
-
-Après vos modifications, créez un changeset :
-
-```bash
-pnpm run changeset
-```
-
-Vous serez invité à :
-
-1. **Sélectionner les packages** (appuyez sur `Espace` pour sélectionner, `Entrée` pour confirmer)
-2. **Choisir le type de bump** :
-   - `patch` (0.0.X) – Corrections de bugs, documentation
-   - `minor` (0.X.0) – Nouvelles fonctionnalités, rétrocompatibles
-   - `major` (X.0.0) – Changements cassants
-3. **Écrire un résumé** – Décrivez les changements (apparaît dans le CHANGELOG)
-
-#### 2. Fichier changeset
-
-Un fichier markdown est créé dans `.changeset/` :
-
-```markdown
----
-"your-package": minor
----
-
-Ajout d'une nouvelle fonction utilitaire pour la transformation de données.
-```
-
-#### 3. Commiter le changeset
-
-```bash
-git add .changeset/
-git commit -m "feat: ajout utilitaire de transformation"
-git push
-```
-
-#### 4. Release automatisée (CI)
-
-Le workflow `release.yml` :
-
-1. **Détecte les changesets** au push sur `main`
-2. **Crée/met à jour** une PR "Version Packages" avec :
-   - Version bumpée dans `package.json`
-   - `CHANGELOG.md` mis à jour
-   - Fichiers changeset consommés
-3. **Quand vous mergez** la PR Version Packages :
-   - Publie sur npm automatiquement
-   - Crée une release GitHub
-
-### Configuration
-
-**.changeset/config.json :**
-
-```json
-{
-  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
-  "commit": false,
-  "fixed": [],
-  "linked": [],
-  "access": "public",
-  "baseBranch": "main",
-  "updateInternalDependencies": "patch",
-  "ignore": []
-}
-```
-
-### Release manuelle (Non recommandé)
-
-Si vous devez publier manuellement :
-
-```bash
-# Appliquer les changesets et bump les versions
-pnpm run version-packages
-
-# Build et publier
-pnpm run build
-pnpm run release
-```
-
----
-
-## 🔄 CI/CD (GitHub Actions)
-
-Trois workflows automatisent les vérifications qualité, la documentation et les releases.
-
-### 1. Workflow CI (`ci.yml`)
-
-**Déclencheurs** : Push sur `main`, Pull Requests
-
-**Étapes** :
-
-| Étape            | Commande                |
-| ---------------- | ----------------------- |
-| Lint (ESLint)    | `pnpm run lint`         |
-| Typecheck (tsc)  | `pnpm run typecheck`    |
-| Tests unitaires  | `pnpm run test`         |
-| Build (tsup)     | `pnpm run build`        |
-| Lint package     | `pnpm run lint:package` |
-| Deps inutilisées | `pnpm run lint:deps`    |
-| Lint Markdown    | `pnpm run lint:md`      |
-| Build docs       | `pnpm run docs:build`   |
-
-### 2. Workflow Docs (`docs.yml`)
-
-**Déclencheurs** : Push sur `main`, Déclenchement manuel
-
-**Jobs** :
-
-1. **Build** : Génère la documentation avec VitePress
-2. **Deploy** : Publie sur GitHub Pages
-
-**Prérequis** :
-
-- Activer GitHub Pages dans les paramètres du dépôt
-- Définir la source sur "GitHub Actions"
-
-### 3. Workflow Release (`release.yml`)
-
-**Déclencheurs** : Push sur `main`
-
-**Jobs** :
-
-1. **Quality Gates** : Exécute lint, typecheck, test, build
-2. **Action Changesets** :
-   - Si des changesets existent : Crée une PR "Version Packages"
-   - Si la PR Version Packages est mergée : Publie sur npm
-
-**Secrets requis** :
-
-| Secret         | Description                          |
-| -------------- | ------------------------------------ |
-| `GITHUB_TOKEN` | Automatique (pour création de PR)    |
-| `NPM_TOKEN`    | Token d'accès npm (pour publication) |
-
-### Configurer NPM_TOKEN
-
-1. Aller sur [npmjs.com](https://www.npmjs.com/) → Compte → Access Tokens
-2. Générer un nouveau token **Automation**
-3. Dans le repo GitHub : Settings → Secrets → Actions
-4. Ajouter `NPM_TOKEN` avec la valeur du token
-
----
-
-## 🔧 Dépannage
-
-### Erreur "Frozen lockfile" en CI
-
-**Erreur** : `ERR_PNPM_FROZEN_LOCKFILE_WITH_OUTDATED_LOCKFILE`
-
-**Cause** : `pnpm-lock.yaml` est désynchronisé de `package.json`
-
-**Solution** :
-
-```bash
-pnpm install
-git add pnpm-lock.yaml
-git commit -m "chore: mise à jour du lockfile"
-```
-
-### 404 sur la documentation GitHub Pages
-
-**Cause** : Chemin `base` manquant dans la config VitePress
-
-**Solution** : Ajouter le base path dans `docs/.vitepress/config.mts` :
-
-```typescript
-export default defineConfig({
-  base: "/nom-de-votre-repo/", // Doit correspondre au nom du repo GitHub
-  // ...
-});
-```
-
-### Erreur NPM_TOKEN manquant
-
-**Erreur** : `NODE_AUTH_TOKEN` is not set
-
-**Cause** : Token npm non configuré dans les secrets GitHub
-
-**Solution** :
-
-1. Créer un token automation npm sur npmjs.com
-2. L'ajouter comme `NPM_TOKEN` dans les secrets du repository GitHub
-
-### Avertissements publint
-
-**Avertissement** : Problèmes d'exports du package
-
-**Cause** : Les exports de `package.json` ne correspondent pas aux fichiers réels
-
-**Solution** :
-
-1. Exécuter `pnpm run build` pour générer les fichiers dist
-2. Vérifier que le champ `exports` correspond aux fichiers générés
-3. Exécuter `pnpm run lint:package` pour valider
-
-### Les hooks Husky ne s'exécutent pas
-
-**Cause** : Hooks non installés ou Git non initialisé
-
-**Solution** :
-
-```bash
-# S'assurer que Git est initialisé
-git init
-
-# Réinstaller les hooks
-pnpm run prepare
-```
-
-### Les tests échouent en CI mais passent localement
-
-**Cause** : Différences d'environnement ou dépendances manquantes
-
-**Solution** :
-
-1. S'assurer que toutes les dépendances sont dans `devDependencies`
-2. Exécuter avec `--frozen-lockfile` localement : `pnpm install --frozen-lockfile`
-3. Vérifier que la version Node.js correspond à la CI (≥20)
-
----
-
-## 📄 Licence
-
-Licence MIT © 2026 [Moaaz KHASSAWNEH](https://github.com/MoaazKHASSAWNEH)
-
-Voir [LICENSE](LICENSE) pour les détails.
+Copyright © 2026 Moaaz KHASSAWNEH
