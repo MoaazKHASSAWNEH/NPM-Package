@@ -119,7 +119,7 @@ After enabling, running `pnpm` commands will automatically use pnpm@9.0.0 as spe
 
 ## Project Structure
 
-```
+```text
 ├── .github/
 │   └── workflows/
 │       ├── ci.yml              # CI: lint, test, build, package checks
@@ -257,7 +257,7 @@ export default defineConfig({
 
 Running `pnpm run build` produces:
 
-```
+```text
 dist/
 ├── index.js        # ESM bundle
 ├── index.cjs       # CommonJS bundle
@@ -790,7 +790,7 @@ Without this, assets and links will return 404.
 
 After deployment, your docs are available at:
 
-```
+```text
 https://<username>.github.io/<repo-name>/
 ```
 
